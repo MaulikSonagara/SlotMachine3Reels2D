@@ -22,6 +22,10 @@ public class BetManager : MonoBehaviour
     public Text claimedText;
     public Text messageText;
 
+
+    [Header("AudioManager")]
+    public AudioManager audioManager;
+
     [Header("Bet Buttons")]
     public Button plus1Button;
     public Button plus10Button;
@@ -42,6 +46,9 @@ public class BetManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
 
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+
+
         Load();
     }
 
@@ -53,13 +60,31 @@ public class BetManager : MonoBehaviour
 
     void HookupButtons()
     {
-        if (plus1Button != null) plus1Button.onClick.AddListener(() => AdjustBet(1));
-        if (plus10Button != null) plus10Button.onClick.AddListener(() => AdjustBet(10));
-        if (plus100Button != null) plus100Button.onClick.AddListener(() => AdjustBet(100));
+        if (plus1Button != null) plus1Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountPlusSFX);
+            AdjustBet(1);
+        });
+        if (plus10Button != null) plus10Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountPlusSFX);
+            AdjustBet(10);
+        });
+        if (plus100Button != null) plus100Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountPlusSFX);
+            AdjustBet(100);
+        });
 
-        if (minus1Button != null) minus1Button.onClick.AddListener(() => AdjustBet(-1));
-        if (minus10Button != null) minus10Button.onClick.AddListener(() => AdjustBet(-10));
-        if (minus100Button != null) minus100Button.onClick.AddListener(() => AdjustBet(-100));
+        if (minus1Button != null) minus1Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountMinusSFX);
+            AdjustBet(-1);
+        });
+        if (minus10Button != null) minus10Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountMinusSFX);
+            AdjustBet(-10);
+        });
+        if (minus100Button != null) minus100Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountMinusSFX);
+            AdjustBet(-100);
+        });
 
         if (betButton != null) betButton.onClick.AddListener(SpinOnce);
         if (autoBetButton != null) autoBetButton.onClick.AddListener(ToggleAutoBet);

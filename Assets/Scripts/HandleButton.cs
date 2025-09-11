@@ -13,6 +13,9 @@ public class HandleButton : MonoBehaviour
     public Animator animator;
     public Button BetBtn;
 
+    [Header("AudioManager")]
+    public AudioManager audioManager;
+
     private bool isSpinning = false;
 
     private int lastSlot1, lastSlot2, lastSlot3;
@@ -23,12 +26,15 @@ public class HandleButton : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     void Start()
     {
         if (BetBtn != null)
             BetBtn.onClick.AddListener(SpinSlots);
+               
     }
 
     public void SpinSlots()
@@ -45,6 +51,7 @@ public class HandleButton : MonoBehaviour
             return; // no funds
 
         isSpinning = true;
+
         animator?.SetTrigger("pull");
 
         int slot1, slot2, slot3;
@@ -95,12 +102,11 @@ public class HandleButton : MonoBehaviour
         lastSlot2 = slot2;
         lastSlot3 = slot3;
 
-        StartCoroutine(SpinRow(row1, slot1, 0.5f));
-        StartCoroutine(SpinRow(row2, slot2, 1.0f));
-        StartCoroutine(SpinRow(row3, slot3, 1.5f, true));
+        StartCoroutine(SpinRow(row1, slot1, 0.5f, 0));
+        StartCoroutine(SpinRow(row2, slot2, 1.0f, 1));
+        StartCoroutine(SpinRow(row3, slot3, 1.5f, 2, true));
     }
 
-    // Weighted symbol picker
     int GetWeightedRandomSymbol()
     {
         var symbols = BetManager.Instance.paytable.symbols;
@@ -121,12 +127,14 @@ public class HandleButton : MonoBehaviour
         return symbols.Length - 1; // fallback
     }
 
-    IEnumerator SpinRow(RectTransform row, int targetIndex, float duration, bool isLastRow = false)
+    IEnumerator SpinRow(RectTransform row, int targetIndex, float duration, int reelIndex, bool isLastRow = false)
     {
+        // start reel spin sound
+        audioManager.PlayReelSpin(reelIndex);
+
         float elapsed = 0f;
         float spinLoops = 2.5f;
         float totalTime = duration + spinLoops;
-
         float scrollSpeed = 300f;
 
         float topY = BetManager.Instance.paytable.symbols[0].yPosition;
@@ -147,16 +155,41 @@ public class HandleButton : MonoBehaviour
             yield return null;
         }
 
+        // snap to symbol
         Vector3 finalPos = row.localPosition;
         finalPos.y = BetManager.Instance.paytable.symbols[targetIndex].yPosition;
         row.localPosition = finalPos;
 
+        // Stop/spin/play icon select sound
+        audioManager.StopReelSpin(reelIndex);
+
         if (isLastRow)
         {
             isSpinning = false;
+
+            // resolve win/lose
             BetManager.Instance.ResolveSpin(lastSlot1, lastSlot2, lastSlot3);
+
+            
+            if (lastSlot1 == lastSlot2 && lastSlot2 == lastSlot3)
+            {
+                // all same sound
+                audioManager.PlaySFX(audioManager.winAudio3X);
+            }
+            else if (lastSlot1 == lastSlot2 || lastSlot1 == lastSlot3 || lastSlot2 == lastSlot3)
+            {
+                // 2 same sound
+                audioManager.PlaySFX(audioManager.winAudio2X);
+            }
+            else
+            {
+                // all different sound
+                audioManager.PlaySFX(audioManager.looseAudio);
+            }
         }
+
     }
+
 
     private void OnMouseDown()
     {
