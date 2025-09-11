@@ -20,6 +20,14 @@ public class BetManager : MonoBehaviour
     public Text claimedText;  // claimed points after spin
     public Text messageText;  // short messages
 
+    [Header("Bet Buttons")] // Bet Amount Buttons
+    public Button plus1Button;
+    public Button plus10Button;
+    public Button plus100Button;
+    public Button minus1Button;
+    public Button minus10Button;
+    public Button minus100Button;
+
     const string KEY_BALANCE = "SM_Balance";
     const string KEY_BET = "SM_Bet";
 
@@ -36,17 +44,19 @@ public class BetManager : MonoBehaviour
     void Start()
     {
         UpdateUI();
+        HookupButtons();
     }
 
-   
-    public void IncreaseBetBy1() => AdjustBet(1);
-    public void IncreaseBetBy10() => AdjustBet(10);
-    public void IncreaseBetBy100() => AdjustBet(100);
+    void HookupButtons()
+    {
+        if (plus1Button != null) plus1Button.onClick.AddListener(() => AdjustBet(1));
+        if (plus10Button != null) plus10Button.onClick.AddListener(() => AdjustBet(10));
+        if (plus100Button != null) plus100Button.onClick.AddListener(() => AdjustBet(100));
 
-    public void DecreaseBetBy1() => AdjustBet(-1);
-    public void DecreaseBetBy10() => AdjustBet(-10);
-    public void DecreaseBetBy100() => AdjustBet(-100);
-   
+        if (minus1Button != null) minus1Button.onClick.AddListener(() => AdjustBet(-1));
+        if (minus10Button != null) minus10Button.onClick.AddListener(() => AdjustBet(-10));
+        if (minus100Button != null) minus100Button.onClick.AddListener(() => AdjustBet(-100));
+    }
 
     void AdjustBet(int delta)
     {
@@ -60,14 +70,13 @@ public class BetManager : MonoBehaviour
         }
 
         int newBet = betAmount + delta;
-        // atleast bet 1, max total amount
         betAmount = Mathf.Clamp(newBet, 1, balance);
         UpdateUI();
         Save();
     }
 
-    
-    
+
+
     public bool TrySpendBet()
     {
         if (betAmount <= 0)
