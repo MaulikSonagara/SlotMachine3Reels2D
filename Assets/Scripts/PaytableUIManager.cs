@@ -87,9 +87,9 @@ public class PaytableUIManager : MonoBehaviour
                 continue;
             }
 
-            // compute amounts using the symbol's data
-            int twoAmount = bet * symbol.baseValue * symbol.twoMultiplier;
-            int threeAmount = bet * symbol.baseValue * symbol.threeMultiplier;
+            
+            int twoAmount = Mathf.RoundToInt(bet * symbol.baseValue * symbol.twoMultiplier);
+            int threeAmount = Mathf.RoundToInt(bet * symbol.baseValue * symbol.threeMultiplier);
 
             if (row.twoOfKindText != null) row.twoOfKindText.text = twoAmount.ToString();
             if (row.threeOfKindText != null) row.threeOfKindText.text = threeAmount.ToString();

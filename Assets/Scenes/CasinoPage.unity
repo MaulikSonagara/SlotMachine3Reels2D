@@ -1208,7 +1208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9636157, b: 0.37421376, a: 1}
+  m_Color: {r: 1, g: 0.9647059, b: 0.37254903, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1311,7 +1311,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 10000
+  m_Text: Bilions
 --- !u!1 &247049100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,7 +2266,6 @@ GameObject:
   - component: {fileID: 494183704}
   - component: {fileID: 494183703}
   - component: {fileID: 494183702}
-  - component: {fileID: 494183701}
   m_Layer: 5
   m_Name: BetButton
   m_TagString: Untagged
@@ -2294,24 +2293,6 @@ RectTransform:
   m_AnchoredPosition: {x: -381.2, y: -223.6}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &494183701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 494183699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2827db9e4789ce438591f3f2f1eedd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HandleBtn: {fileID: 796427511}
-  row1: {fileID: 1494800818}
-  row2: {fileID: 1622595584}
-  row3: {fileID: 1837490187}
-  animator: {fileID: 447624744}
-  BetBtn: {fileID: 494183702}
 --- !u!114 &494183702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5669,11 +5650,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443913508}
   m_CullTransparentMesh: 1
---- !u!1 &1494800818 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3437362520682452191, guid: 34f9c5f1b3d0d244ca01c83a8abefeb1, type: 3}
-  m_PrefabInstance: {fileID: 1735549175}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1494800819 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 175360461507375898, guid: 34f9c5f1b3d0d244ca01c83a8abefeb1, type: 3}
@@ -5987,11 +5963,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584529550}
   m_CullTransparentMesh: 1
---- !u!1 &1622595584 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1649401368698141813, guid: 34f9c5f1b3d0d244ca01c83a8abefeb1, type: 3}
-  m_PrefabInstance: {fileID: 1735549175}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1622595585 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5227827101622864876, guid: 34f9c5f1b3d0d244ca01c83a8abefeb1, type: 3}
@@ -6191,6 +6162,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1699698711}
   m_CullTransparentMesh: 1
+--- !u!1 &1699871736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1699871738}
+  - component: {fileID: 1699871737}
+  m_Layer: 0
+  m_Name: PaytableUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1699871737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699871736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8211002c2419f2b449581961a5a03284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paytable: {fileID: 11400000, guid: 4cbbbd7675d53984bb8db00efeee6788, type: 2}
+  betManager: {fileID: 1926137014}
+  rows:
+  - symbol: {fileID: 11400000, guid: fb14e561e2e0a584daf18601de3f81bc, type: 2}
+    twoOfKindText: {fileID: 2009909298}
+    threeOfKindText: {fileID: 154160988}
+  - symbol: {fileID: 11400000, guid: de94198f2f3497f41824185810fb9a02, type: 2}
+    twoOfKindText: {fileID: 1416457726}
+    threeOfKindText: {fileID: 347424329}
+  - symbol: {fileID: 11400000, guid: d4ea7881267051640a67abab6eaf4bf7, type: 2}
+    twoOfKindText: {fileID: 588982499}
+    threeOfKindText: {fileID: 413873830}
+  - symbol: {fileID: 11400000, guid: cb59c5ed1c5803548bf9b7fc238b7526, type: 2}
+    twoOfKindText: {fileID: 1768990588}
+    threeOfKindText: {fileID: 1998465501}
+  - symbol: {fileID: 11400000, guid: 12f8165d50a73c84ab2bd02dea3a4995, type: 2}
+    twoOfKindText: {fileID: 2063661301}
+    threeOfKindText: {fileID: 1562538701}
+  - symbol: {fileID: 11400000, guid: 2279ee8def0402f438b34bd80d24a5d3, type: 2}
+    twoOfKindText: {fileID: 1059639404}
+    threeOfKindText: {fileID: 857493606}
+  - symbol: {fileID: 11400000, guid: 154b5ef0c26be11469fdf73c4734f65a, type: 2}
+    twoOfKindText: {fileID: 1040936326}
+    threeOfKindText: {fileID: 1584529552}
+--- !u!4 &1699871738
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699871736}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 860.3958, y: 591.6944, z: -7.783541}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1706073864
 GameObject:
   m_ObjectHideFlags: 0
@@ -6979,11 +7018,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810574371}
   m_CullTransparentMesh: 1
---- !u!1 &1837490187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 648590757825367990, guid: 34f9c5f1b3d0d244ca01c83a8abefeb1, type: 3}
-  m_PrefabInstance: {fileID: 1735549175}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1837490188 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6870229691912856080, guid: 34f9c5f1b3d0d244ca01c83a8abefeb1, type: 3}
@@ -7244,6 +7278,14 @@ MonoBehaviour:
   betText: {fileID: 1108229050}
   claimedText: {fileID: 189712776}
   messageText: {fileID: 1263390035}
+  plus1Button: {fileID: 643490324}
+  plus10Button: {fileID: 10640160}
+  plus100Button: {fileID: 1743687145}
+  minus1Button: {fileID: 776022014}
+  minus10Button: {fileID: 474012274}
+  minus100Button: {fileID: 795015993}
+  betButton: {fileID: 494183702}
+  autoBetButton: {fileID: 171481894}
 --- !u!4 &1926137015
 Transform:
   m_ObjectHideFlags: 0
@@ -8320,3 +8362,4 @@ SceneRoots:
   - {fileID: 1872652821}
   - {fileID: 1012729228}
   - {fileID: 1926137015}
+  - {fileID: 1699871738}

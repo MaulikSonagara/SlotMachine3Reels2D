@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Seven
   icon: {fileID: 21300000, guid: c01fdb8f200708f4ea8fff835dc2de89, type: 3}
-  baseValue: 7
-  twoMultiplier: 4
-  threeMultiplier: 25
+  baseValue: 4
+  twoMultiplier: 1.5
+  threeMultiplier: 3
   weight: 7
   yPosition: -1.35

@@ -7,26 +7,30 @@ public class BetManager : MonoBehaviour
     public static BetManager Instance { get; private set; }
 
     [Header("Data")]
-    public Paytable paytable;              // assign your Paytable.asset here
+    public Paytable paytable;
     public int startingBalance = 1000;
     public int betAmount = 10;
 
     [Header("Runtime State")]
     public int balance;
+    private bool autoBetActive = false;
+    private Coroutine autoBetRoutine;
 
     [Header("UI")]
-    public Text balanceText; // available amount
-    public Text betText;    // current bet
-    public Text claimedText;  // claimed points after spin
-    public Text messageText;  // short messages
+    public Text balanceText;
+    public Text betText;
+    public Text claimedText;
+    public Text messageText;
 
-    [Header("Bet Buttons")] // Bet Amount Buttons
+    [Header("Bet Buttons")]
     public Button plus1Button;
     public Button plus10Button;
     public Button plus100Button;
     public Button minus1Button;
     public Button minus10Button;
     public Button minus100Button;
+    public Button betButton;       // single spin
+    public Button autoBetButton;   // toggle auto-spin
 
     const string KEY_BALANCE = "SM_Balance";
     const string KEY_BET = "SM_Bet";
@@ -56,6 +60,9 @@ public class BetManager : MonoBehaviour
         if (minus1Button != null) minus1Button.onClick.AddListener(() => AdjustBet(-1));
         if (minus10Button != null) minus10Button.onClick.AddListener(() => AdjustBet(-10));
         if (minus100Button != null) minus100Button.onClick.AddListener(() => AdjustBet(-100));
+
+        if (betButton != null) betButton.onClick.AddListener(SpinOnce);
+        if (autoBetButton != null) autoBetButton.onClick.AddListener(ToggleAutoBet);
     }
 
     void AdjustBet(int delta)
@@ -75,8 +82,55 @@ public class BetManager : MonoBehaviour
         Save();
     }
 
+    #region Spin / AutoBet
+    public void SpinOnce()
+    {
+        if (HandleButton.Instance != null)
+        {
+            HandleButton.Instance.SpinSlots();
+        }
+        else
+        {
+            ShowMessage("No slot machine found");
+        }
+    }
 
+    void ToggleAutoBet()
+    {
+        autoBetActive = !autoBetActive;
 
+        if (autoBetActive)
+        {
+            autoBetRoutine = StartCoroutine(AutoSpinRoutine());
+            ShowMessage("AutoBet ON");            
+            autoBetButton.image.color = new Color32(96,136,255,255);
+        }
+        else
+        {
+            if (autoBetRoutine != null) StopCoroutine(autoBetRoutine);
+            ShowMessage("AutoBet OFF");
+            autoBetButton.image.color = new Color32(255,246,95,255);
+        }
+    }
+
+    IEnumerator AutoSpinRoutine()
+    {
+        while (autoBetActive)
+        {
+            if (balance < betAmount)
+            {
+                ShowMessage("Not enough funds for AutoBet");
+                autoBetActive = false;
+                yield break;
+            }
+
+            SpinOnce();
+            yield return new WaitForSeconds(2.5f); // wait until reels finish (adjust)
+        }
+    }
+    #endregion
+
+    #region TrySpend / ResolveSpin
     public bool TrySpendBet()
     {
         if (betAmount <= 0)
@@ -97,7 +151,6 @@ public class BetManager : MonoBehaviour
         return true;
     }
 
-    // payout calculation
     public void ResolveSpin(int slotIndex1, int slotIndex2, int slotIndex3)
     {
         int payout = CalculatePayout(slotIndex1, slotIndex2, slotIndex3);
@@ -117,11 +170,9 @@ public class BetManager : MonoBehaviour
         UpdateUI();
         Save();
     }
+    #endregion
 
-    #region Payout logic (uses SlotSymbol fields)
-    // Rules:
-    //  all same: payout = betAmount * baseValue * threeMultiplier
-    //  two same: payout = betAmount * baseValue * twoMultiplier 
+    #region Payout logic
     int CalculatePayout(int s1, int s2, int s3)
     {
         var symbols = paytable.symbols;
@@ -132,25 +183,23 @@ public class BetManager : MonoBehaviour
         var B = symbols[s2];
         var C = symbols[s3];
 
-        // 2 same
+        // 3-of-a-kind
         if (s1 == s2 && s2 == s3)
-        {
-            return betAmount * A.baseValue * A.threeMultiplier;
-        }
+            return Mathf.RoundToInt(betAmount * A.baseValue * A.threeMultiplier);
 
-        // all same
+        // 2-of-a-kind
         if (s1 == s2)
-            return betAmount * A.baseValue * A.twoMultiplier;
+            return Mathf.RoundToInt(betAmount * A.baseValue * A.twoMultiplier);
         if (s2 == s3)
-            return betAmount * B.baseValue * B.twoMultiplier;
+            return Mathf.RoundToInt(betAmount * B.baseValue * B.twoMultiplier);
         if (s1 == s3)
-            return betAmount * A.baseValue * A.twoMultiplier;
+            return Mathf.RoundToInt(betAmount * A.baseValue * A.twoMultiplier);
 
         return 0;
     }
     #endregion
 
-    #region UI + Persistence helpers
+    #region UI + Persistence
     void UpdateUI()
     {
         if (balanceText != null) balanceText.text = $"{balance}";
@@ -197,7 +246,6 @@ public class BetManager : MonoBehaviour
         balance = PlayerPrefs.GetInt(KEY_BALANCE, startingBalance);
         betAmount = PlayerPrefs.GetInt(KEY_BET, betAmount);
 
-        // Clamp bet to valid range
         if (balance == 0) betAmount = 0;
         else betAmount = Mathf.Clamp(betAmount, 1, Mathf.Max(1, balance));
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Cherry
   icon: {fileID: 21300000, guid: 4240a0486248efc42b55c665d3ebee00, type: 3}
   baseValue: 1
-  twoMultiplier: 2
-  threeMultiplier: 5
+  twoMultiplier: 0.5
+  threeMultiplier: 1
   weight: 30
   yPosition: 0.7

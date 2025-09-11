@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Diomand
   icon: {fileID: 21300000, guid: 2df6b51f6184215408406d0539ea9e24, type: 3}
-  baseValue: 10
-  twoMultiplier: 5
-  threeMultiplier: 50
+  baseValue: 5
+  twoMultiplier: 1.75
+  threeMultiplier: 5
   weight: 5
   yPosition: -0.35

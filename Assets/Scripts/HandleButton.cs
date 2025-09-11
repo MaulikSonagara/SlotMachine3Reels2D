@@ -7,7 +7,7 @@ public class HandleButton : MonoBehaviour
 {
     [Header("References")]
     public GameObject HandleBtn;
-    public RectTransform row1;   
+    public RectTransform row1;
     public RectTransform row2;
     public RectTransform row3;
     public Animator animator;
@@ -17,13 +17,21 @@ public class HandleButton : MonoBehaviour
 
     private int lastSlot1, lastSlot2, lastSlot3;
 
+    public static HandleButton Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
+    }
+
     void Start()
     {
         if (BetBtn != null)
             BetBtn.onClick.AddListener(SpinSlots);
     }
 
-    void SpinSlots()
+    public void SpinSlots()
     {
         if (isSpinning) return;
 
@@ -39,44 +47,48 @@ public class HandleButton : MonoBehaviour
         isSpinning = true;
         animator?.SetTrigger("pull");
 
-        var length = BetManager.Instance.paytable.symbols.Length;
-
-        // icon probablity
         int slot1, slot2, slot3;
         int prob = Random.Range(0, 100);
 
-        if (prob < 10)
+        // Triple match (7%)
+        if (prob < 7)
         {
-            slot1 = slot2 = slot3 = Random.Range(0, length);
+            slot1 = slot2 = slot3 = GetWeightedRandomSymbol();
         }
-        else if (prob < 40)
+        // Double match (28%)
+        else if (prob < 35) // 7 + 28 = 35
         {
-            slot1 = Random.Range(0, length);
+            slot1 = GetWeightedRandomSymbol();
             int pairType = Random.Range(0, 3);
             if (pairType == 0)
             {
                 slot2 = slot1;
-                do { slot3 = Random.Range(0, length); } while (slot3 == slot1);
+                do { slot3 = GetWeightedRandomSymbol(); } while (slot3 == slot1);
             }
             else if (pairType == 1)
             {
                 slot3 = slot1;
-                do { slot2 = Random.Range(0, length); } while (slot2 == slot1);
+                do { slot2 = GetWeightedRandomSymbol(); } while (slot2 == slot1);
             }
             else
             {
-                slot2 = slot3 = Random.Range(0, length);
-                do { slot1 = Random.Range(0, length); } while (slot1 == slot2);
+                slot2 = slot3 = GetWeightedRandomSymbol();
+                do { slot1 = GetWeightedRandomSymbol(); } while (slot1 == slot2);
             }
         }
+        // All different (65%)
         else
         {
-            List<int> slots = new List<int>();
-            for (int i = 0; i < length; i++) slots.Add(i);
-
-            slot1 = slots[Random.Range(0, slots.Count)]; slots.Remove(slot1);
-            slot2 = slots[Random.Range(0, slots.Count)]; slots.Remove(slot2);
-            slot3 = slots[Random.Range(0, slots.Count)];
+            HashSet<int> chosen = new HashSet<int>();
+            while (chosen.Count < 3)
+            {
+                chosen.Add(GetWeightedRandomSymbol());
+            }
+            int[] arr = new int[3];
+            chosen.CopyTo(arr);
+            slot1 = arr[0];
+            slot2 = arr[1];
+            slot3 = arr[2];
         }
 
         lastSlot1 = slot1;
@@ -86,6 +98,27 @@ public class HandleButton : MonoBehaviour
         StartCoroutine(SpinRow(row1, slot1, 0.5f));
         StartCoroutine(SpinRow(row2, slot2, 1.0f));
         StartCoroutine(SpinRow(row3, slot3, 1.5f, true));
+    }
+
+    // Weighted symbol picker
+    int GetWeightedRandomSymbol()
+    {
+        var symbols = BetManager.Instance.paytable.symbols;
+        int totalWeight = 0;
+
+        foreach (var s in symbols)
+            totalWeight += s.weight;
+
+        int rand = Random.Range(0, totalWeight);
+        int cumulative = 0;
+
+        for (int i = 0; i < symbols.Length; i++)
+        {
+            cumulative += symbols[i].weight;
+            if (rand < cumulative)
+                return i;
+        }
+        return symbols.Length - 1; // fallback
     }
 
     IEnumerator SpinRow(RectTransform row, int targetIndex, float duration, bool isLastRow = false)

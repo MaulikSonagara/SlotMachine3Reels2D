@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Bell
   icon: {fileID: 21300000, guid: f5b074c9e349008418a3f025c142ba6e, type: 3}
-  baseValue: 5
-  twoMultiplier: 3
-  threeMultiplier: 15
+  baseValue: 3
+  twoMultiplier: 1
+  threeMultiplier: 2.5
   weight: 10
   yPosition: -3.25
