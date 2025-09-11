@@ -210,7 +210,7 @@ public class BetManager : MonoBehaviour
 
     public void ResolveSpin(int slotIndex1, int slotIndex2, int slotIndex3)
     {
-        int payout = CalculatePayout(slotIndex1, slotIndex2, slotIndex3);
+        int payout = CalculatePayoutPublic(slotIndex1, slotIndex2, slotIndex3);
 
         if (payout > 0)
         {
@@ -230,7 +230,7 @@ public class BetManager : MonoBehaviour
     #endregion
 
     #region Payout logic
-    int CalculatePayout(int s1, int s2, int s3)
+    public int CalculatePayoutPublic(int s1, int s2, int s3)
     {
         var symbols = paytable.symbols;
         if (s1 < 0 || s1 >= symbols.Length || s2 < 0 || s2 >= symbols.Length || s3 < 0 || s3 >= symbols.Length)

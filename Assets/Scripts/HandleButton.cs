@@ -170,7 +170,15 @@ public class HandleButton : MonoBehaviour
             // resolve win/lose
             BetManager.Instance.ResolveSpin(lastSlot1, lastSlot2, lastSlot3);
 
-            
+            if (LogManager.Instance != null)
+            {
+                int[] results = new int[] { lastSlot1, lastSlot2, lastSlot3 };
+                int lastWinAmount = BetManager.Instance.CalculatePayoutPublic(lastSlot1, lastSlot2, lastSlot3);
+                LogManager.Instance.AddLog(BetManager.Instance.betAmount, results, lastWinAmount);
+            }
+
+
+
             if (lastSlot1 == lastSlot2 && lastSlot2 == lastSlot3)
             {
                 // all same sound

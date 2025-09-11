@@ -20,6 +20,16 @@ public class PaytableUIManager : MonoBehaviour
 
     int lastKnownBet = -1;
 
+    public static PaytableUIManager Instance {  get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         if (betManager == null && BetManager.Instance != null)
@@ -95,4 +105,15 @@ public class PaytableUIManager : MonoBehaviour
             if (row.threeOfKindText != null) row.threeOfKindText.text = threeAmount.ToString();
         }
     }
+
+    public Sprite GetSymbolSprite(int index)
+    {
+        if (paytable == null || paytable.symbols == null) return null;
+
+        if (index < 0 || index >= paytable.symbols.Length)
+            return null;
+
+        return paytable.symbols[index].icon; 
+    }
+
 }
