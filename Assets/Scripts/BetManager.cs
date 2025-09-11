@@ -30,9 +30,11 @@ public class BetManager : MonoBehaviour
     public Button plus1Button;
     public Button plus10Button;
     public Button plus100Button;
+    public Button plus1000Button;
     public Button minus1Button;
     public Button minus10Button;
     public Button minus100Button;
+    public Button minus1000Button;
     public Button betButton;       // single spin
     public Button autoBetButton;   // toggle auto-spin
 
@@ -72,6 +74,10 @@ public class BetManager : MonoBehaviour
             audioManager.PlaySFX(audioManager.betAmountPlusSFX);
             AdjustBet(100);
         });
+        if (plus1000Button != null) plus1000Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountPlusSFX);
+            AdjustBet(1000);
+        });
 
         if (minus1Button != null) minus1Button.onClick.AddListener(() => {
             audioManager.PlaySFX(audioManager.betAmountMinusSFX);
@@ -84,6 +90,10 @@ public class BetManager : MonoBehaviour
         if (minus100Button != null) minus100Button.onClick.AddListener(() => {
             audioManager.PlaySFX(audioManager.betAmountMinusSFX);
             AdjustBet(-100);
+        });
+        if (minus1000Button != null) minus1000Button.onClick.AddListener(() => {
+            audioManager.PlaySFX(audioManager.betAmountMinusSFX);
+            AdjustBet(-1000);
         });
 
         if (betButton != null) betButton.onClick.AddListener(SpinOnce);
@@ -122,20 +132,41 @@ public class BetManager : MonoBehaviour
 
     void ToggleAutoBet()
     {
-        autoBetActive = !autoBetActive;
-
         if (autoBetActive)
         {
-            autoBetRoutine = StartCoroutine(AutoSpinRoutine());
-            ShowMessage("AutoBet ON");            
-            autoBetButton.image.color = new Color32(96,136,255,255);
+            StopAutoBet();
         }
         else
         {
-            if (autoBetRoutine != null) StopCoroutine(autoBetRoutine);
-            ShowMessage("AutoBet OFF");
-            autoBetButton.image.color = new Color32(255,246,95,255);
+            StartAutoBet();
         }
+    }
+
+    void StartAutoBet()
+    {
+        
+        if (balance < betAmount || betAmount <= 0)
+        {
+            ShowMessage("Not enough funds");
+            audioManager.PlaySFX(audioManager.betAmountMinusSFX);
+            return;
+        }
+
+        autoBetActive = true;
+        autoBetRoutine = StartCoroutine(AutoSpinRoutine());
+        ShowMessage("AutoBet ON");
+        autoBetButton.image.color = new Color32(96, 136, 255, 255);
+        audioManager.PlaySFX(audioManager.betAmountPlusSFX);
+    }
+
+    void StopAutoBet()
+    {
+        autoBetActive = false;
+        if (autoBetRoutine != null) StopCoroutine(autoBetRoutine);
+        autoBetRoutine = null;
+        ShowMessage("AutoBet OFF");
+        autoBetButton.image.color = new Color32(255, 246, 95, 255);
+        audioManager.PlaySFX(audioManager.betAmountMinusSFX);
     }
 
     IEnumerator AutoSpinRoutine()
@@ -145,14 +176,15 @@ public class BetManager : MonoBehaviour
             if (balance < betAmount)
             {
                 ShowMessage("Not enough funds for AutoBet");
-                autoBetActive = false;
+                StopAutoBet();   
                 yield break;
             }
 
             SpinOnce();
-            yield return new WaitForSeconds(2.5f); // wait until reels finish (adjust)
+            yield return new WaitForSeconds(2.5f); // adjust duration to reel spin
         }
     }
+
     #endregion
 
     #region TrySpend / ResolveSpin
