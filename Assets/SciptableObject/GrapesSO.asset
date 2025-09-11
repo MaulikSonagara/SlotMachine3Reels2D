@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Grapes
   icon: {fileID: 21300000, guid: 2b3a48549d797c14fa5de00f898239b3, type: 3}
-  baseValue: 1
-  twoMultiplier: 1
-  threeMultiplier: 5
-  weight: 1
+  baseValue: 3
+  twoMultiplier: 2
+  threeMultiplier: 8
+  weight: 20
+  yPosition: 1.85

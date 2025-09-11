@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Clove
   icon: {fileID: 21300000, guid: f04f4d4b53591d648ab8818241d91f88, type: 3}
-  baseValue: 1
-  twoMultiplier: 1
-  threeMultiplier: 5
-  weight: 1
+  baseValue: 4
+  twoMultiplier: 3
+  threeMultiplier: 10
+  weight: 15
+  yPosition: -2.3
