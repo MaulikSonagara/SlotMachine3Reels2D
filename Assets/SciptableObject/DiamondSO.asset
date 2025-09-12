@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0820f01b4805034ea96721413c2aa14, type: 3}
-  m_Name: DiomandSO
+  m_Name: DiamondSO
   m_EditorClassIdentifier: 
-  displayName: Diomand
+  displayName: Diamond
   icon: {fileID: 21300000, guid: 2df6b51f6184215408406d0539ea9e24, type: 3}
   baseValue: 5
   twoMultiplier: 1.75
