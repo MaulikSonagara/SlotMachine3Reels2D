@@ -1,4 +1,4 @@
-# 🎰 Slot Machine Prototype
+#  Slot Machine Prototype
 
 A **3-reel slot machine game** built in Unity.  
 Players can place bets, spin the reels, and win payouts based on a data-driven paytable.  
@@ -6,7 +6,7 @@ Features persistence, logs, info pages, and audio feedback.
 
 ---
 
-## 🛠️ Features
+##  Features
 
 - **3-Reel Core Loop**
   - Place bet → Spin → Evaluate → Win/Lose → Update balance.
@@ -35,7 +35,7 @@ Features persistence, logs, info pages, and audio feedback.
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 <pre>
 Assets/
@@ -68,14 +68,14 @@ Assets/
 </pre>
 ---
 
-## ⚙️ Requirements
+##  Requirements
 
 - **Unity** 2021.3 LTS or later (tested on 2022.3 LTS).
 - PC / WebGL build supported.
 
 ---
 
-## ▶️ How to Play
+##  How to Play
 
 1. **Set Bet** – Adjust bet amount using + / – buttons.
 2. **Spin** – Press handle or Spin button to start reels.
@@ -86,7 +86,7 @@ Assets/
 
 ---
 
-## 🧮 Paytable Example
+##  Paytable Example
 
 | Icon | Base Value | 2x Multiplier | 3x Multiplier |
 |------|------------|---------------|---------------|
@@ -100,7 +100,7 @@ Assets/
 
 ---
 
-## 📊 Architecture Diagram
+##  Architecture Diagram
 
 <pre>
 [ Player ]
@@ -119,7 +119,7 @@ Assets/
 </pre>
 ---
 
-## 📜 Credits
+##  Credits
 
 - **Icons**: Google image downloads / Self-made  
 - **Music**: [Pixabay](https://pixabay.com/)  
@@ -128,10 +128,10 @@ Assets/
 
 ---
 
-## ⚠️ Known Issues
+##  Known Issues
 
-- Buttons clickable during spin unless locked.  
 - Minimal win animations (future polish).  
-- Reset functionality missing.  
+- Reset functionality missing.
+- No option to reset balance when it reaches 0 (planned money flow system will address this in future).
 
 ---
