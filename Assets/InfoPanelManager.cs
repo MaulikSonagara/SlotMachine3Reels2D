@@ -41,7 +41,7 @@ public class InfoPanelManager : MonoBehaviour
             Text threeXText = rowObj.transform.Find("ThreeXText").GetComponent<Text>();
 
             if (icon != null) icon.sprite = symbol.icon;
-            if (nameText != null) nameText.text = symbol.name;
+            if (nameText != null) nameText.text = symbol.displayName;
             if (baseText != null) baseText.text = symbol.baseValue.ToString();
             if (twoXText != null) twoXText.text = $"x{symbol.twoMultiplier}";
             if (threeXText != null) threeXText.text = $"x{symbol.threeMultiplier}";
